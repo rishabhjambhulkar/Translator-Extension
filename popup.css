@@ -1,0 +1,31 @@
+/* popup.css */
+
+body {
+    font-family: Arial, sans-serif; /* Optional: Set a font for better readability */
+}
+
+.container {
+    padding: 10px; /* Optional: Add some padding to the container */
+}
+
+select {
+    color: black; /* Set the text color of the select options */
+    background-color: white; /* Set a background color for better contrast */
+    border: 1px solid #ccc; /* Add a border to the select */
+    padding: 5px; /* Add some padding inside the select */
+    border-radius: 4px; /* Optional: Round the corners of the select */
+    width: 100%; /* Make the select take full width */
+}
+
+button {
+    background-color: #007BFF; /* Bootstrap primary color */
+    color: white; /* Button text color */
+    border: none; /* Remove default border */
+    padding: 10px; /* Add padding */
+    border-radius: 4px; /* Optional: Round corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darken button on hover */
+}
