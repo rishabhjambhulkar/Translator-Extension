@@ -1,8 +1,10 @@
+
+
+
 window.addEventListener("DOMContentLoaded", async () => {
     const fromDiv = document.getElementById("from");
     const toDiv = document.getElementById("to");
-    const translationOutput = document.getElementById("translation-output"); // New element for displaying translation
-
+   
     // Fetch languages from local storage
     const { languages } = await chrome.storage.local.get("languages");
 
@@ -33,16 +35,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         chrome.storage.local.set({ to: selectedToOption.value });
     });
 
-    // Translate button click event
-    document.getElementById("translate-button").addEventListener("click", async () => {
-        const textToTranslate = "Your text to translate"; // Placeholder for the selected text
-        const targetLang = toDiv.value;
-        const translation = await callApilayerTranslate(textToTranslate, targetLang);
-        console.log("Translated Text:", translation);
-        
-        // Display the translated text in the popup
-        translationOutput.textContent = translation; // Show translation in output element
-    });
+
 });
 
 // Populate the language dropdowns based on the structure of the language data

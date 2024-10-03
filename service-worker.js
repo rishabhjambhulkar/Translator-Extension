@@ -1,4 +1,7 @@
 // Create context menu option and fetch supported languages on extension installation
+
+const  API_KEY = "2q9sg0TVWOaSzq6QwPDuOl3RuIY0ktCM"
+
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
         id: "translate-menu",
@@ -12,7 +15,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
 async function fetchSupportedLanguages() {
     const myHeaders = new Headers();
-    myHeaders.append("apikey", "eZaADgi51DP7ZjETJs5k4VH2NbhstLRD");
+    myHeaders.append("apikey", API_KEY);
 
     const requestOptions = {
         method: "GET",
@@ -39,7 +42,7 @@ async function callApilayerTranslate(text, target_lang) {
     const API_URL = `https://api.apilayer.com/language_translation/translate?target=${target_lang}`;
 
     const myHeaders = new Headers();
-    myHeaders.append("apikey", "eZaADgi51DP7ZjETJs5k4VH2NbhstLRD");
+    myHeaders.append("apikey", API_KEY);
 
     const raw = JSON.stringify({ text });
 
@@ -79,15 +82,40 @@ async function callApilayerTranslate(text, target_lang) {
 }
 
 
-chrome.contextMenus.onClicked.addListener(async (info, tabs) => {
-    const { from, to } = await chrome.storage.local.get(["from", "to"]);
+
+
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     if (info.selectionText) {
+        const { from, to } = await chrome.storage.local.get(["from", "to"]);
         const translation = await callApilayerTranslate(info.selectionText, to);
-        // Send the translation to the content script
-        chrome.tabs.sendMessage(tabs.id, { translation }, (response) => {
-            if (chrome.runtime.lastError) {
-                console.error("Error sending message: ", chrome.runtime.lastError.message);
+
+        // Query the active tab
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (tabs.length > 0) {
+                const activeTab = tabs[0]; // Get the active tab
+                
+                // Send the translation to the content script on the active tab
+                chrome.tabs.sendMessage(activeTab.id, { translation }, (response) => {
+                    if (chrome.runtime.lastError) {
+                        console.error("Error sending message: ", chrome.runtime.lastError.message);
+                    } else {
+                        console.log("Translation sent successfully:", response);
+                    }
+                });
+            } else {
+                console.error("No active tab found.");
             }
         });
     }
 });
+
+
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: ['contentScript.js']
+    }, () => {
+      chrome.tabs.sendMessage(tab.id, { test: "Hello from service worker" });
+    });
+  });
+  

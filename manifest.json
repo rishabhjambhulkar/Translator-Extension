@@ -1,23 +1,23 @@
 {
-    "manifest_version": 3,
-    "name": "DeepL Translation",
-    "description": "Translate web content.",
-    "version": "1.0",
-    "action": {
-      "default_icon": "translate.png",
-      "default_popup": "popup.html"
-    },
-    "permissions": ["activeTab", "contextMenus", "storage"],
-    "icons": { "16": "translate.png" },
-    "content_scripts": [
-      {
-        "matches": ["*://*/*"],
-        "run_at": "document_end",
-        "js": ["contentScript.js", "popup.js"],
-        "css": ["popup.css"]
-      }
-    ],
-    "background": {
-      "service_worker": "service-worker.js"
+  "manifest_version": 3,
+  "name": "Translation",
+  "description": "Translate web content.",
+  "version": "1.0",
+  "action": {
+    "default_icon": "translate.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": ["activeTab", "contextMenus","scripting", "storage", "clipboardWrite"],
+  "icons": { "16": "translate.png" },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "run_at": "document_end",
+      "js": ["contentScript.js"],
+      "css": ["popup.css"]
     }
+  ],
+  "background": {
+    "service_worker": "service-worker.js"
   }
+}
